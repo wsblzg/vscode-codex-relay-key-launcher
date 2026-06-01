@@ -1,7 +1,7 @@
 [project]
-name = "vscode-codex-relay-window-launcher"
+name = "vscode-codex-key-launcher"
 version = "0.1.0"
-description = "Tkinter launcher for opening isolated VSCode Codex windows from codex-relay accounts."
+description = "Tkinter launcher for opening isolated VSCode Codex windows from an accounts.json file."
 requires-python = ">=3.11"
 dependencies = []
 

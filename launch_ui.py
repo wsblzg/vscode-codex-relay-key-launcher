@@ -17,7 +17,7 @@ from tkinter import filedialog, messagebox, ttk
 
 APP_TITLE = "VSCode 多窗口 Codex Key"
 DEFAULT_WORKSPACE = r"D:\项目"
-DEFAULT_RELAY_HOME = Path.home() / ".codex-relay"
+DEFAULT_RELAY_HOME = Path.home() / ".codex-key-launcher"
 DEFAULT_ACCOUNTS_PATH = DEFAULT_RELAY_HOME / "accounts.json"
 DEFAULT_TEST_MODEL = "gpt-5.5"
 CLAUDE_CODE_ONLY_MARKER = "can only be used in Claude Code"
@@ -131,7 +131,7 @@ def test_key_with_responses_api(account: "RelayAccount", timeout_seconds: int = 
         headers={
             "Authorization": f"Bearer {account.api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "vscode-codex-relay-key-tester/0.1",
+            "User-Agent": "vscode-codex-key-launcher/0.1",
         },
         method="POST",
     )

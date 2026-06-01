@@ -1,4 +1,4 @@
-# vscode-codex-relay-key-launcher
+# vscode-codex-key-launcher
 
 这个项目提供一个 Windows 启动器，让不同 VSCode 窗口使用不同的 Codex key。它适合账号池里有多个 key 的场景：每个窗口启动时绑定一个独立 profile，避免 key 用完后必须关闭会话、重启 VSCode、手动改配置。
 

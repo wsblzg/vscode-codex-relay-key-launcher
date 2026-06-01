@@ -79,7 +79,7 @@ function Get-RelayData {
   if ($AccountsPath) {
     $resolvedAccountsPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($AccountsPath)
   } else {
-    $relayHome = if ($env:CODEX_RELAY_HOME) { $env:CODEX_RELAY_HOME } else { Join-Path $env:USERPROFILE ".codex-relay" }
+    $relayHome = if ($env:CODEX_KEY_LAUNCHER_HOME) { $env:CODEX_KEY_LAUNCHER_HOME } else { Join-Path $env:USERPROFILE ".codex-key-launcher" }
     $resolvedAccountsPath = Join-Path $relayHome "accounts.json"
   }
 

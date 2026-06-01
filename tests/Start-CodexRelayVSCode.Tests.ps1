@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
 $scriptPath = Join-Path $projectRoot "Start-CodexRelayVSCode.ps1"
-$testRoot = Join-Path $env:TEMP ("codex-relay-tests-" + [guid]::NewGuid().ToString("N"))
+$testRoot = Join-Path $env:TEMP ("codex-key-launcher-tests-" + [guid]::NewGuid().ToString("N"))
 $relayHome = Join-Path $testRoot "relay"
 $customRelayHome = Join-Path $testRoot "custom-relay"
 $profilesRoot = Join-Path $testRoot "profiles"
@@ -43,8 +43,8 @@ try {
     (New-Object System.Text.UTF8Encoding($false))
   )
 
-  $previousRelayHome = $env:CODEX_RELAY_HOME
-  $env:CODEX_RELAY_HOME = $relayHome
+  $previousLauncherHome = $env:CODEX_KEY_LAUNCHER_HOME
+  $env:CODEX_KEY_LAUNCHER_HOME = $relayHome
 
   $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath `
     -AccountsPath $accountsPath `
@@ -74,7 +74,7 @@ try {
 
   Write-Host "Start-CodexRelayVSCode shared provider state test passed."
 } finally {
-  $env:CODEX_RELAY_HOME = $previousRelayHome
+  $env:CODEX_KEY_LAUNCHER_HOME = $previousLauncherHome
   if (Test-Path -LiteralPath $testRoot) {
     Remove-Item -LiteralPath $testRoot -Recurse -Force
   }
