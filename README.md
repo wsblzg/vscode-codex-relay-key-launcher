@@ -218,5 +218,3 @@ uv run python -m unittest tests.test_key_status
 - `tests/`
 - `README.md`
 - `.gitignore`
-
-不建议上传 `dist\CodexRelayKeyLauncher.exe`，除非单独做 GitHub Release。这样仓库保持干净，避免把本地打包产物和敏感状态带上去。
