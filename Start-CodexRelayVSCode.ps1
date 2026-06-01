@@ -1,5 +1,6 @@
 param(
   [string]$Workspace = "D:\项目",
+  [string]$AccountsPath,
   [string]$Account,
   [string[]]$Accounts,
   [switch]$Next,
@@ -75,16 +76,21 @@ function Get-ProviderName {
 }
 
 function Get-RelayData {
-  $relayHome = if ($env:CODEX_RELAY_HOME) { $env:CODEX_RELAY_HOME } else { Join-Path $env:USERPROFILE ".codex-relay" }
-  $accountsPath = Join-Path $relayHome "accounts.json"
-  $relay = Read-JsonFile -Path $accountsPath
+  if ($AccountsPath) {
+    $resolvedAccountsPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($AccountsPath)
+  } else {
+    $relayHome = if ($env:CODEX_RELAY_HOME) { $env:CODEX_RELAY_HOME } else { Join-Path $env:USERPROFILE ".codex-relay" }
+    $resolvedAccountsPath = Join-Path $relayHome "accounts.json"
+  }
+
+  $relay = Read-JsonFile -Path $resolvedAccountsPath
 
   if (-not $relay.accounts -or $relay.accounts.Count -eq 0) {
-    throw "No relay accounts found in $accountsPath"
+    throw "No relay accounts found in $resolvedAccountsPath"
   }
 
   [pscustomobject]@{
-    Path = $accountsPath
+    Path = $resolvedAccountsPath
     Data = $relay
   }
 }
@@ -504,9 +510,9 @@ function Start-VSCodeForAccount {
 
 $relayInfo = Get-RelayData
 $relay = $relayInfo.Data
+Write-Host "Relay accounts from $($relayInfo.Path)"
 
 if ($List) {
-  Write-Host "Relay accounts from $($relayInfo.Path)"
   foreach ($item in $relay.accounts) {
     $mark = if ($item.name -eq $relay.preferred) { "*" } else { " " }
     Write-Host "$mark $($item.name) $($item.baseUrl) $(Mask-Key -Key $item.apiKey)"

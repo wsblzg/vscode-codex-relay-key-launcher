@@ -287,13 +287,21 @@ class LauncherApp(tk.Tk):
 
     def choose_accounts_file(self) -> None:
         path = filedialog.askopenfilename(
-            title="选择 codex-relay accounts.json",
-            initialdir=str(DEFAULT_RELAY_HOME),
+            title="选择 accounts.json",
+            initialdir=self.accounts_file_initial_dir(),
             filetypes=[("JSON", "*.json"), ("All files", "*.*")],
         )
         if path:
             self.accounts_path.set(path)
             self.refresh_accounts()
+
+    def accounts_file_initial_dir(self) -> str:
+        current = Path(self.accounts_path.get()).expanduser()
+        if current.exists():
+            return str(current.parent if current.is_file() else current)
+        if current.parent.exists():
+            return str(current.parent)
+        return str(Path.home())
 
     def choose_workspace(self) -> None:
         path = filedialog.askdirectory(
@@ -619,6 +627,8 @@ class LauncherApp(tk.Tk):
             "Bypass",
             "-File",
             str(SCRIPT_PATH),
+            "-AccountsPath",
+            str(Path(self.accounts_path.get()).expanduser()),
             "-Accounts",
             ",".join(selected),
             "-Workspace",

@@ -4,6 +4,7 @@ $projectRoot = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
 $scriptPath = Join-Path $projectRoot "Start-CodexRelayVSCode.ps1"
 $testRoot = Join-Path $env:TEMP ("codex-relay-tests-" + [guid]::NewGuid().ToString("N"))
 $relayHome = Join-Path $testRoot "relay"
+$customRelayHome = Join-Path $testRoot "custom-relay"
 $profilesRoot = Join-Path $testRoot "profiles"
 $providerStateRoot = Join-Path $testRoot "provider-state"
 $workspace = Join-Path $testRoot "workspace"
@@ -20,7 +21,7 @@ function Assert-True {
 }
 
 try {
-  New-Item -ItemType Directory -Path $relayHome, $profilesRoot, $providerStateRoot, $workspace | Out-Null
+  New-Item -ItemType Directory -Path $relayHome, $customRelayHome, $profilesRoot, $providerStateRoot, $workspace | Out-Null
 
   $accounts = @{
     preferred = "acct-a"
@@ -35,8 +36,9 @@ try {
   }
 
   $accountsJson = ($accounts | ConvertTo-Json -Depth 10) + "`n"
+  $accountsPath = Join-Path $customRelayHome "accounts.json"
   [System.IO.File]::WriteAllText(
-    (Join-Path $relayHome "accounts.json"),
+    $accountsPath,
     $accountsJson,
     (New-Object System.Text.UTF8Encoding($false))
   )
@@ -45,6 +47,7 @@ try {
   $env:CODEX_RELAY_HOME = $relayHome
 
   $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $scriptPath `
+    -AccountsPath $accountsPath `
     -Account "acct-a" `
     -Workspace $workspace `
     -ProfilesRoot $profilesRoot `
@@ -67,6 +70,7 @@ try {
   Assert-True ((Get-Content -LiteralPath $configPath -Encoding UTF8 -Raw) -match 'model_provider\s*=\s*"rightcode"') "Provider name was not written to config.toml."
   $outputText = ($output | Out-String)
   Assert-True ($outputText -match 'provider state') "PrepareOnly output did not show provider state path."
+  Assert-True ($outputText -match [regex]::Escape($accountsPath)) "PrepareOnly output did not show the selected accounts.json path."
 
   Write-Host "Start-CodexRelayVSCode shared provider state test passed."
 } finally {
