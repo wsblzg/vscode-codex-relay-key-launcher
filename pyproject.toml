@@ -1,0 +1,14 @@
+[project]
+name = "vscode-codex-relay-window-launcher"
+version = "0.1.0"
+description = "Tkinter launcher for opening isolated VSCode Codex windows from codex-relay accounts."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.20.0",
+]

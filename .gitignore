@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+build/
+dist/
+*.log
+
+.codex-evolution/
+.learnings/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+*.local
+*.tmp
+
+# Keep real Codex/Codex Relay credentials outside the repository.
+accounts.json
+auth.json
+config.toml
+*.key
+*.pem
