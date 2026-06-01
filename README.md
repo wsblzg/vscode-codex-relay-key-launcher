@@ -1,10 +1,10 @@
-# VSCode 多窗口 Codex Key 隔离工具
+# vscode-codex-relay-key-launcher
 
 这个项目提供一个 Windows 启动器，让不同 VSCode 窗口使用不同的 Codex key。它适合账号池里有多个 key 的场景：每个窗口启动时绑定一个独立 profile，避免 key 用完后必须关闭会话、重启 VSCode、手动改配置。
 
 ## 功能
 
-- 图形界面可选择任意 `accounts.json` 路径，不需要固定使用 `C:\Users\DAS\.codex-relay`。
+- 图形界面可选择任意 `accounts.json` 路径。
 - 支持勾选一个或多个账号，一次打开多个 VSCode 窗口。
 - 每个账号使用独立 `CODEX_HOME`，不同窗口可以绑定不同 key。
 - 可按 `provider` 共享 Codex 会话状态，减少多窗口之间的历史记录割裂。
